@@ -1,3 +1,16 @@
+# ※ 実行方法
+なぜかJSからAPIをPOSTで叩きにいくと回数制限エラーが出る（curlで叩くといけるのに）ので，flaskで自前のRestfulAPIサバを立ててもらいます．
+
+```
+pip install -r requirements.txt
+```
+
+```
+python remove_filler.py
+```
+
+この状態で`index.html`をローカルで立ち上げてもらえば動作確認できます．
+
 # Webカメラの映像に自動字幕を重ねるWebページ
 <img src="./sample.gif" alt="動作風景「このページを開くだけで音声認識をした結果の字幕をこんな感じで…」">
 
