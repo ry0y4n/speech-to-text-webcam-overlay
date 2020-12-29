@@ -272,6 +272,7 @@
     // 参考: https://qiita.com/sakuraya/items/33f93e19438d0694a91d
     var userAgent = window.navigator.userAgent.toLowerCase();
     var isChrome = 0;
+    var request = new XMLHttpRequest();
 
     if (userAgent.indexOf('msie') != -1 || userAgent.indexOf('trident') != -1) {
         // IE
@@ -452,6 +453,7 @@
 
         recognition.onresult = function (event) {
             var results = event.results;
+            var fillered_script = ''
             for (var i = event.resultIndex; i < results.length; i++) {
                 if (results[i].isFinal) {
                     var result_transcript = results[i][0].transcript
@@ -460,9 +462,24 @@
                     }
 
                     if(document.getElementById('checkbox_hiragana').checked && lang == 'ja-JP'){
-                        document.getElementById('result_text').innerHTML = resultToHiragana(result_transcript);
+                        console.log(`(1): ${result_transcript}`)
+                        request.open('GET', `http://0.0.0.0:8000/remove_filler?text=${result_transcript}`, true);
+                        request.send()
+                        request.onload = function () {
+                            fillered_script = this.response;
+                            console.log(fillered_script);
+                        };
+                        document.getElementById('result_text').innerHTML = resultToHiragana(fillered_script);
                     }else{
-                        document.getElementById('result_text').innerHTML = result_transcript;
+                        console.log(`(2): ${result_transcript}`)
+                        request.open('GET', `http://0.0.0.0:8000/remove_filler?text=${result_transcript}`, true);
+                        request.send()
+                        request.onload = function () {
+                            fillered_script = this.response;
+                            console.log(`(2)': ${fillered_script}`);
+                            document.getElementById('result_text').innerHTML = fillered_script;
+                        };
+                        // document.getElementById('result_text').innerHTML = fillered_script;
                     }
                     setTimeoutForClearText();
 
@@ -488,8 +505,24 @@
                     var result_transcript = results[i][0].transcript;
 
                     if(document.getElementById('checkbox_hiragana').checked && lang == 'ja-JP'){
+                        // console.log(`(3): ${result_transcript}`)
+                        // request.open('GET', `http://0.0.0.0:8000/remove_filler?text=${result_transcript}`, true);
+                        // request.send()
+                        // request.onload = function () {
+                        //     fillered_script = this.response;
+                        //     console.log(fillered_script);
+                        // };
+                        // document.getElementById('result_text').innerHTML = resultToHiragana(fillered_script);
                         document.getElementById('result_text').innerHTML = resultToHiragana(result_transcript);
                     }else{
+                        // console.log(`(4): ${result_transcript}`)
+                        // request.open('GET', `http://0.0.0.0:8000/remove_filler?text=${result_transcript}`, true);
+                        // request.send()
+                        // request.onload = function () {
+                        //     fillered_script = this.response;
+                        //     console.log(fillered_script);
+                        // };
+                        // document.getElementById('result_text').innerHTML = fillered_script;
                         document.getElementById('result_text').innerHTML = result_transcript;
                     }
 
